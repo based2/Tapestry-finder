@@ -5,6 +5,16 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>Tapestry Component Search</name>
+    
+    <properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<tapestry-webframework-version>5.2.6</tapestry-webframework-version>
+		<cayenne-orm-version>3.0.2</cayenne-orm-version>
+		<shiro-security-version>1.1.0</shiro-security-version>
+		<derby-database-version>10.8.1.2</derby-database-version>
+		<url-result>http://localhost:8080/</url-result>
+	</properties>
+    
     <dependencies>
         <!-- A dependency on either JUnit or TestNG is required, or the surefire plugin (which runs the tests)
 will fail, preventing Maven from packaging the WAR. Tapestry includes a large number
@@ -14,7 +24,7 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
             <artifactId>testng</artifactId>
             <version>5.8</version>
             <classifier>jdk15</classifier>
-            <scope>test</scope>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -47,24 +57,27 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
         <dependency>
         	<groupId>org.apache.cayenne</groupId>
         	<artifactId>cayenne-server</artifactId>
-        	<version>3.0.2</version>
+        	<version>${cayenne-orm-version}</version>
         	<type>jar</type>
         	<scope>compile</scope>
         </dependency>
+        
         <dependency>
         	<groupId>org.apache.derby</groupId>
         	<artifactId>derby</artifactId>
-        	<version>10.8.1.2</version>
+        	<version>${derby-database-version}</version>
         	<type>jar</type>
         	<scope>compile</scope>
         </dependency>
+        
         <dependency>
         	<groupId>org.apache.tapestry</groupId>
         	<artifactId>tapestry-core</artifactId>
-        	<version>5.2.6</version>
+        	<version>${tapestry-webframework-version}</version>
         	<type>jar</type>
         	<scope>compile</scope>
         </dependency>
+        
         <!--
         <dependency>
         	<groupId>com.googlecode.tapestry5-cayenne</groupId>
@@ -74,6 +87,7 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
         	<scope>compile</scope>
         </dependency>
     	-->
+    	
         <dependency>
         	<groupId>commons-lang</groupId>
         	<artifactId>commons-lang</artifactId>
@@ -81,7 +95,6 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
         	<type>jar</type>
         	<scope>compile</scope>
         </dependency>
-                
         
     </dependencies>
     <description>A Java web application for helping Tapestry users find Tapestry components.</description>
@@ -94,7 +107,7 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
     	</developer>
     </developers>
     <scm>
-        	<developerConnection>Apache Tapestry Developers</developerConnection>
+        <developerConnection>scm:git:git://github.com/path_to_repository</developerConnection>
     </scm>
     <organization>
     	<name>Apache</name>
@@ -106,6 +119,7 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
@@ -113,7 +127,13 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
                 </configuration>
             </plugin>
 
-            <!-- Run the application using "mvn jetty:run" -->
+            <!-- Run the application using "mvn jetty:run" 
+            
+            DB config:
+             1. /src/main/webapp/WEB-INF/web.xml
+             2. /src/main/webapp/WEB-INF/jetty-env.xml
+             
+            -->
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>maven-jetty-plugin</artifactId>
@@ -125,16 +145,142 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
                              that prevents the requestLog from being set. -->
                         <append>true</append>
                     </requestLog>
+                    <systemProperties>
+						<systemProperty>
+							<name>tapestry.compress-whitespace</name>
+							<value>false</value>
+						</systemProperty>
+						<systemProperty>
+							<name>tapestry.production-mode</name>
+							<value>false</value>
+						</systemProperty>
+					</systemProperties>
                 </configuration>
+                <dependencies>
+		        <dependency>
+				    <groupId>commons-dbcp</groupId>
+				    <artifactId>commons-dbcp</artifactId>
+				    <version>1.4</version>
+				    <type>jar</type>
+				</dependency>
+		      </dependencies>
             </plugin>
             
+        <plugin>
+        	<groupId>org.apache.maven.plugins</groupId>
+        	<artifactId>maven-jar-plugin</artifactId>
+        	<version>2.3.1</version>
+        </plugin>
+        
+        <plugin>  
+			<groupId>org.codehaus.mojo</groupId>  
+			<artifactId>exec-maven-plugin</artifactId>  
+			<version>1.2</version>
+			<executions>
+			<execution>  
+		       <phase>pre-site</phase>  
+		      <goals>  
+		       <goal>java</goal>  
+		      </goals> 
+		      <configuration>
+        		<workingDirectory>/target</workingDirectory>
+		       	<mainClass>org.apache.tapestry.finder.deploy.StartBrowser</mainClass>
+		       <arguments>
+		        <argument>${url-result}</argument>
+		        <argument>10000</argument>
+		        <argument>mvn jetty:run &amp;</argument>
+		       </arguments>  
+		      </configuration>  
+		     </execution>  
+		    </executions>  
+		   </plugin>
+        
+            <!-- Run the ORM modeler: "mvn cayenne-modeler:run"  -->
 	        <plugin>
 	            <groupId>org.apache.cayenne.plugins</groupId>
 	      	    <artifactId>maven-cayenne-modeler-plugin</artifactId>
-	      	    <version>3.0.2</version>
-	        </plugin> 
-           
+	      	    <version>${cayenne-orm-version}</version>
+	        </plugin>
+	        
+	        
+	        <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-site-plugin</artifactId>
+	      <version>3.0</version>
+	      <configuration>
+	        <reportPlugins>
+	          <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-javadoc-plugin</artifactId>
+	            <version>2.7</version>
+	          </plugin>
+	          <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-jxr-plugin</artifactId>
+	            <version>2.2</version>
+	            <configuration>
+	              <aggregate>true</aggregate>
+	            </configuration>
+	          </plugin>
+	         <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-surefire-report-plugin</artifactId>
+	            <version>2.9</version>
+	          </plugin>
+	          <plugin>
+	            <groupId>org.codehaus.mojo</groupId>
+	            <artifactId>cobertura-maven-plugin</artifactId>
+	            <version>2.5.1</version>
+	            <configuration>
+	              <formats>
+	                <format>xml</format>
+	                <format>html</format>
+	              </formats>
+	            </configuration>
+	          </plugin>
+	          <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-checkstyle-plugin</artifactId>
+	            <version>2.6</version>
+	          </plugin>
+	          <plugin>
+				<groupId>org.apache.tapestry</groupId>
+				<artifactId>tapestry-component-report</artifactId>
+				<version>${tapestry-webframework-version}</version>
+				<configuration>
+					<rootPackage>org.apache.tapestry.finder</rootPackage>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+					<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+				</configuration>
+			</plugin>
+	        </reportPlugins>
+	      </configuration>
+	    </plugin>
+	    <plugin>
+        	<groupId>org.codehaus.mojo</groupId>
+        	<artifactId>findbugs-maven-plugin</artifactId>
+        	<version>2.3.2</version>
+		</plugin>
+		<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <linkXref>true</linkXref>
+          <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+          <minimumTokens>100</minimumTokens>
+          <targetJdk>1.5</targetJdk>
+		</configuration>
+      </plugin>
         </plugins>
+        
     </build>
 
     <repositories>
@@ -159,4 +305,9 @@ of testing facilities designed for use with TestNG (http://testng.org/), so it's
     </pluginRepositories>
 
     <modules />
+    
+    <!-- 
+    mvn clean install pre-site
+    mvn site
+     -->
 </project>
