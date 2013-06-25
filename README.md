@@ -34,3 +34,9 @@ because of the hope that this app will one day be an integrated part of the
 Tapestry web site, project members will need to have submitted a signed Apache
 [Contributor License Agreements] (http://www.apache.org/licenses/#clas) before
 joining.
+
+Start
+=====
+
+mvn jetty:run
+http://localhost:8080/components/

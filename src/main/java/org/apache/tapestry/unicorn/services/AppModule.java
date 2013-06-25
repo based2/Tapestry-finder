@@ -14,22 +14,8 @@
  */
 package org.apache.tapestry.unicorn.services;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.security.SecureRandom;
-
-import org.apache.tapestry.unicorn.bindings.CycleBindingFactory;
-import org.apache.tapestry.unicorn.encoders.EntryEncoder;
-import org.apache.tapestry.unicorn.encoders.EntryTypeEncoder;
-import org.apache.tapestry.unicorn.encoders.LicenseEncoder;
-import org.apache.tapestry.unicorn.encoders.SourceTypeEncoder;
-import org.apache.tapestry.unicorn.encoders.TapestryVersionEncoder;
-import org.apache.tapestry.unicorn.entities.Entry;
-import org.apache.tapestry.unicorn.entities.EntryType;
-import org.apache.tapestry.unicorn.entities.License;
-import org.apache.tapestry.unicorn.entities.SourceType;
-import org.apache.tapestry.unicorn.entities.TapestryVersion;
-import org.apache.tapestry.unicorn.entities.User;
+import org.apache.tapestry.unicorn.encoders.*;
+import org.apache.tapestry.unicorn.entities.*;
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
@@ -37,20 +23,17 @@ import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Local;
-import org.apache.tapestry5.ioc.services.ApplicationDefaults;
 import org.apache.tapestry5.ioc.services.Coercion;
 import org.apache.tapestry5.ioc.services.CoercionTuple;
-import org.apache.tapestry5.ioc.services.SymbolProvider;
-import org.apache.tapestry5.services.BindingFactory;
-import org.apache.tapestry5.services.BindingSource;
-import org.apache.tapestry5.services.Request;
-import org.apache.tapestry5.services.RequestFilter;
-import org.apache.tapestry5.services.RequestHandler;
-import org.apache.tapestry5.services.Response;
-import org.apache.tapestry5.services.ValueEncoderFactory;
+import org.apache.tapestry5.services.*;
 import org.apache.tapestry5.services.compatibility.Compatibility;
-import org.apache.tapestry5.services.compatibility.Trait;
 import org.slf4j.Logger;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.security.SecureRandom;
+
+//import org.apache.tapestry.unicorn.bindings.CycleBindingFactory;
 //import org.tynamo.security.federatedaccounts.services.DefaultHibernateFederatedAccountServiceImpl;
 //import org.tynamo.security.federatedaccounts.services.FederatedAccountService;
 
@@ -123,13 +106,13 @@ public class AppModule
      * @param configuration
      * @param bindingSource
      */
-    public static void contributeBindingSource(
+  /*  public static void contributeBindingSource(
             MappedConfiguration<String, BindingFactory> configuration,
             BindingSource bindingSource
             )
     {
         configuration.add("cycle",new CycleBindingFactory(bindingSource));
-    }
+    } */
     
 
     /**

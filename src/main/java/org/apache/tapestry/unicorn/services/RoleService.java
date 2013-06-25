@@ -18,12 +18,11 @@ import java.util.List;
 
 import org.apache.tapestry.unicorn.entities.Role;
 
-public interface RoleService
-{
+public interface RoleService {
 
 	/**
 	 * Get a list of all roles, sorted by name ascending.
-	 *
+	 * 
 	 * @return List of all {@link Role}s in the system.
 	 */
 	public List<Role> findAllRoles();

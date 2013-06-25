@@ -18,20 +18,20 @@ import java.util.List;
 
 import org.apache.tapestry.unicorn.entities.User;
 
-public interface UserService
-{
+public interface UserService {
 
 	/**
 	 * Find a user by the given user id.
-	 *
-	 * @param the user id of the desired user
+	 * 
+	 * @param the
+	 *            user id of the desired user
 	 * @return the first matching User, or null if not found
 	 */
 	public User findByUserId(String userId);
 
 	/**
 	 * Get a list of all users, sorted by name ascending.
-	 *
+	 * 
 	 * @return List of all {@link User}s in the system.
 	 */
 	public List<User> findAll();

@@ -18,8 +18,7 @@ import org.apache.tapestry5.json.JSONObject;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 @Import(library = "${context:/js/inputprompt.js")
-public class InputPrompt
-{
+public class InputPrompt {
 	// Required parameter: the text to insert as a prompt
 	@Parameter(required = true, defaultPrefix = BindingConstants.LITERAL)
 	private String promptText;
@@ -34,18 +33,16 @@ public class InputPrompt
 	@InjectContainer
 	private ClientElement clientElement;
 
-	public void setupRender()
-	{
-		promptColor = "#808080";	// default text color for prompt
+	public void setupRender() {
+		promptColor = "#808080"; // default text color for prompt
 	}
 
 	/**
-	 * Tell the Tapestry.Initializer to set up the InputPrompt (after the
-	 * DOM has been fully loaded). 
+	 * Tell the Tapestry.Initializer to set up the InputPrompt (after the DOM
+	 * has been fully loaded).
 	 */
 	@AfterRender
-	public void addInitializer()
-	{
+	public void addInitializer() {
 		JSONObject spec = new JSONObject();
 		spec.put("textboxId", clientElement.getClientId());
 		spec.put("promptText", promptText);

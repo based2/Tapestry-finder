@@ -8,10 +8,11 @@ as a org.eclipse.jetty.server.server.xml.XmlConfiguration file and is applied to
 org.eclipse.jetty.servlet.WebApplicationContext object
 -->
 
-<Configure class="org.mortbay.jetty.webapp.WebAppContext">
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
   <Set name="contextPath">/components</Set>
-  <New id="COMPSEARCH-DS" class="org.mortbay.jetty.plus.naming.Resource">
-		<Arg>jdbc/ComponentFinderDB</Arg>
+  <New id="COMPSEARCH-DS" class="org.eclipse.jetty.plus.jndi.Resource">
+      <Arg></Arg>
+      <Arg>jdbc/ComponentFinderDB</Arg>
 		<Arg>
 			<New class="org.apache.commons.dbcp.BasicDataSource">
 				<Set name="Url">jdbc:derby:database/componentSearchDB</Set>
