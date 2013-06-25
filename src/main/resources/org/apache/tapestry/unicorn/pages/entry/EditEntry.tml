@@ -1,0 +1,105 @@
+<html t:type="layout" title="Edit Entry"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd" xmlns:p="tapestry:parameter">
+
+<div class="itemheading">
+<h2>${pageHeading}</h2>
+<p class="greeting">${message:greeting}</p>
+</div>
+
+<t:form t:id="editForm" context="entry">
+	<t:errors/>
+
+	<table class="detail-table">
+		<tr>
+			<th><t:label for="name"/>:</th>
+			<td><t:textField t:id="name" validate="required,max=64" size="25"
+					value="name"/>
+			</td>
+		</tr>
+		<tr>
+			<th><t:label for="entryTypeMenu"/>:</th>
+			<td colspan="2">
+				<t:radioGroup t:id="entryTypeMenu" validate="required"
+						value="type">
+					<t:loop source="entryTypes" value="entryType">
+						<t:radio t:id="entryType" value="entryType" />
+						<t:label for="entryType" style="margin-right: 1em"
+								title="${entryType?.description}">
+							${entryType?.name}
+						</t:label>
+					</t:loop>
+				</t:radioGroup>
+			</td>
+		</tr>
+		<tr>
+			<th><t:label for="description"/>:</th>
+			<td><t:textArea t:id="description" validate="required,max=4096"
+					rows="5" cols="70" value="description"/></td>
+			<td class="instruction">${message:descriptionInstructions}</td>
+		</tr>
+		<tr>
+			<th><t:label for="documentationUrl"/>:</th>
+			<td><input t:type="textField" t:id="documentationUrl" size="91"
+					placeholder="Enter a URL" validate="max=1024"
+					value="documentationUrl" /></td>
+			<td class="instruction" rowspan="2" style="vertical-align: middle">
+				${message:urlInstructions}</td>
+		</tr>
+		<tr>
+			<th><t:label for="demonstrationUrl"/>:</th>
+			<td><t:textField t:id="demonstrationUrl" size="91" 
+					placeholder="Enter a URL" validate="max=1024"
+					value="demonstrationUrl" /></td>
+		</tr>
+		<tr>
+			<th><t:label for="sinceSelection"/>:</th>
+			<td>Tapestry <t:select t:id="sinceSelection" value="since"
+						model="versionSelectModel" /> ${message:andLater}
+			</td>
+		</tr>
+		<tr>
+			<th><t:label for="untilSelection"/>:</th>
+			<td>
+				Tapestry <t:select t:id="untilSelection" value="until"
+						model="versionSelectModel" /> ${message:andLater}
+			</td>
+		</tr>
+		<tr>
+			<th><t:label for="sourceTypeMenu"/>:</th>
+			<td colspan="2">
+				<t:radioGroup t:id="sourceTypeMenu" validate="required"
+						value="source">
+					<t:loop source="sourceTypes" value="sourceType">
+						<t:radio t:id="sourceType" value="sourceType" />
+						<t:label for="sourceType" style="margin-right: 1em"
+								title="${sourceType?.description}">
+							${sourceType?.name}
+						</t:label>
+					</t:loop>
+				</t:radioGroup>
+			</td>
+		</tr>
+		<tr>
+			<th><t:label for="parentSelection"/>:</th>
+			<td><t:select t:id="parentSelection" value="parent"
+						model="parentSelectModel" /></td>
+		</tr>
+		<tr>
+			<th><t:label for="licenseSelection"/>:</th>
+			<td><t:select t:id="licenseSelection" value="license"
+						model="licenseSelectModel" /></td>
+		</tr>
+		<tr><th><t:label for="enabled" />:
+				<t:checkbox t:id="enabled" style="margin-left: 1em" />
+			</th>
+			<td class="controls">
+				<t:submit value="Save"/>
+				<t:pageLink page="index" context="entry"
+					class="cancel">Cancel</t:pageLink>
+			</td></tr>
+	</table>
+	TODO: for under-privileged users, present a CAPTCHA and save with a status
+	of "disabled". Only authenticated users can mark "enabled".
+</t:form>
+
+</html>

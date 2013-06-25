@@ -1,0 +1,38 @@
+<html t:type="layout" title="Tapestry Versions List"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+
+<div class="itemheading">
+	<h2>Tapestry Versions</h2>
+</div>
+${message}
+<!-- right-size zone containing an editing form -->
+<t:zone t:id="editZone" id="editZone" update="show"
+	visible="false" style="position: absolute; left: 30em">
+	<t:keepInView class="detail-box">
+		<t:form t:id="editForm">
+			<table>
+			<tr><th><t:label for="name"/></th>
+				<td><t:textfield t:id="name" value="name" size="15"/></td>
+			</tr>
+			<tr><th><t:label for="description"/></th>
+				<td><t:textarea t:id="description" value="description"
+						rows="2" cols="30"/></td>
+			</tr>
+			<tr><td></td><td><t:submit value="Save"/></td></tr>
+			</table>
+		</t:form>
+	</t:keepInView>
+</t:zone>
+
+<!-- left-side list if items to edit -->
+<ul class="entry-list">
+<t:loop source="versions" value="version">
+	<li><t:actionlink t:id="itemLink" context="version.id" zone="editZone">
+		${version.name}</t:actionlink>
+	<span class="details">${version.description}</span>
+	</li>
+</t:loop>
+</ul>
+
+</html>

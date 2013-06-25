@@ -1,0 +1,88 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+     xmlns:p="tapestry:parameter">
+
+<t:if test="entry">
+	<div class="detail-box">
+		<div class="icon ${entry.entryType.cssClass}"></div>
+		
+		<div style="float:left; margin-bottom: .8em">
+			<h2>${entry.name}</h2>
+			<div class="entry-type">&#8230;${article}
+				${entry.entryType?.name.toLowerCase()}
+				<t:if test="entry.parent">
+					from
+					<t:eventLink zone="^" event="viewEntry" context="entry?.parent"
+							title="${entry.parent?.description}">
+						${entry.parent?.name}
+					</t:eventLink>
+				</t:if>
+				<t:if test="entry.sourceType">
+					(${entry.sourceType.name})
+				</t:if>
+			</div>
+		</div>
+
+		<div class="controls">
+			<t:pageLink page="entry/editentry" style="margin-left: 2em"
+				t:context="entry" class="controls"
+				title="Edit this entry">Edit...</t:pageLink>
+		</div>
+
+		<p><t:textOutput value="entry.description" /></p>
+	
+		<table class="detail-table">
+	
+			<t:if test="entry.documentationUrl">
+			<tr><th>Docs:</th>
+				<td><a href="${entry.documentationUrl}" class="short-url external"
+						title="Go to ${entry.documentationUrl}">
+						${shortDocUrl}</a>
+				</td>
+			</tr>
+			</t:if>
+			<t:if test="entry.demonstrationUrl">
+			<tr><th>Demo:</th>
+				<td><a href="${entry.demonstrationUrl}" class="short-url external"
+						title="Go to ${entry.demonstrationUrl}">
+						${shortDemoUrl}</a>
+				</td>
+			</tr>
+			</t:if>
+			<t:if test="hasVersions">
+				<tr><th>For:</th>
+					<td>Tapestry <t:if test="entry.since">${entry.since?.name} +</t:if>
+						<t:if test="entry.until">(before ${entry.until?.name} +)</t:if>
+					</td>
+				</tr>
+			</t:if>
+			<tr><th>License:</th><td class="license"
+						title="${entry.license?.description}">
+					<t:if test="entry.license">
+						${entry.license.name}
+						<p:else><em>unknown</em></p:else>
+					</t:if>
+				</td>
+			</tr>
+			<t:if test="children">
+				<tr><th style="vertical-align: top">Contains:</th>
+					<td>
+						<div class="${multicolumnClass}">
+							<ul class="entry-list">
+							<t:loop source="children" value="child">
+								<li class="${child.entryType.cssClass}">
+									<t:eventLink zone="^" event="viewEntry"
+									context="child"
+									title="${child.description}">${child.name}
+									</t:eventLink>
+								</li>
+							</t:loop>
+							</ul>
+						</div>
+					</td>
+				</tr>
+			</t:if>
+		</table>
+	</div>
+</t:if>
+
+</t:container>
